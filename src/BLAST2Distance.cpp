@@ -5,39 +5,19 @@
 #include <iostream>
 
 void printUsage(){
-/*	cerr << "Rapid neighbour-joining. An implementation of the canonical neighbour-joining method which utilize a fast search heuristic to reduce the running time. RapidNJ can be used to reconstruct large trees using a very small amount of memory by utilizing the HDD as storage." << endl << endl;
-	cerr << "USAGE: rapidnj INPUT [OPTIONS]" << endl;
-	cerr << "The INPUT can be a distance matrix in phylip (.phylip) format or a multiple alignment in stockholm (.sth) or phylip format (.phylip)." << endl;*/
+	std::cerr << "BLAST2Dinstance creates a distance matrix for RapidNJ in a relaxed phylip format. This means it uses more then 10 characters for the sequence names." << std::endl << std::endl;
+	std::cerr << "USAGE: BLAST2Dinstance [OPTIONS]" << std::endl;
 	std::cerr << "OPTIONS:" << std::endl;
 	std::cerr << "  -h, --help                Display this help message and exit." << std::endl;
-/*	cerr << "  -v, --verbose             turn on verbose output." << endl;
-	cerr << "  -i, --input-format ARG    Specifies the type of input. pd = distance" << endl;
-	cerr << "                            matrix in phylip format, sth = multiple alignment in (single line) stockholm format." << endl;
-	cerr << "                            fa = multiple alignment in (single line) FASTA format." << endl;
-	cerr << "  -o, --output-format ARG   Specifies the type of output. t = phylogenetic tree in newick format" << endl;
-	cerr << "                            (default), m = distance matrix." << endl;
-	cerr << "  -a, --evolution-model ARG Specifies which sequence evolution method to use when computing" << endl;
-	cerr << "                            distance estimates from multiple alignments. jc = juke cantor," << endl;
-	cerr << "                            kim = Kimura's distance (default)." << endl;
-	cerr << "  -m, --memory-size         The maximum amount of memory which rapidNJ is allowed to use (in MB)." << endl;
-	cerr << "                            Default is 90% of all available memory." << endl;
-	cerr << "  -k, --rapidnj-mem ARG     Force RapidNJ to use a memory efficient version of rapidNJ. The 'arg'" << endl;
-	cerr << "                            specifies the percentage of a sorted distance matrix which should be" << endl;
-	cerr << "                            stored in memory (arg=10 means 10%)." << endl;
-	cerr << "  -d, --rapidnj-disk ARG    Force RapidNJ to use HDD caching where 'arg' is the directory used to" << endl;
-	cerr << "                            store cached files." << endl;
-//	cerr << "  -s, --simplenj            Use a naive implementation of the NJ method." << endl;
-//	cerr << "  -f, --no-rapiddist        Disable rapid computation of distance estimates and use a naive" << endl;
-//	cerr << "                            algorithm for this." << endl;
-	cerr << "  -c, --cores ARG           Number of cores to use for computating distance matrices from multiple" << endl;
-	cerr << "                            alignments. All available cores are used by default." << endl;
-	cerr << "  -b  --bootstrap ARG       Compute bootstrap values using ARG samples. The output tree will be" << endl;
-	cerr << "                            annotated with the bootstrap values." << endl;
-	cerr << "  -t, --alignment-type ARG  Force the input alignment to be treated as: p = protein alignment, " << endl;
-	cerr << "                            d = DNA alignment." << endl;
-//	cerr << "  -g  --gpu                 Use CUDA enabled GPU to compute distance estimates." << endl;
-	cerr << "  -n  --no-negative-length  Adjust for negative branch lengths." << endl;
-	cerr << "  -x  --output-file ARG     Output the result to this file instead of stdout." << endl;*/
+	std::cerr << "  -s, --sequence-file ARG   The fasta file from that BLAST generated the high scoring pairs." << std::endl;
+	std::cerr << "  -i, --input-file ARG      The file with the e-values of the high scoring pairs from an all to all comparison" << std::endl;
+	std::cerr << "                            BLAST search of the input sequences. This file is a tab separated table" << std::endl;
+	std::cerr << "                            with three columns. The first columns contains the query sequence ID." << std::endl;
+	std::cerr << "                            The second column columns contains the subject sequence ID. And the" << std::endl;
+	std::cerr << "                            third columns contains the e-value." << std::endl;
+	std::cerr << "                            matrix in phylip format, sth = multiple alignment in (single line) stockholm format." << std::endl;
+	std::cerr << "  -o, --output-file ARG     The file with the lower triangular distance matrix genrated from the e-values in" << std::endl;
+	std::cerr << "                            in a relaxed phylip format, that means the names can be longer then 10 characters." << std::endl;
 	exit(EXIT_SUCCESS);
 }
 
