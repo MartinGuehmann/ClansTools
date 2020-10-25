@@ -27,10 +27,6 @@ LINKER_COMMANDS =-o
 INCLUDES=
 endif
 
-#CC      = g++
-#CFLAGS  = -O3 -finline-functions -funroll-loops -Wall
-#LDFLAGS = -lm
-
 SRCPATH=src
 OBJPATH=obj
 LIBPATH=lib
@@ -43,12 +39,6 @@ objects = $(OBJPATH)/BLAST2Distance.o \
           $(OBJPATH)/getopt_pp/getopt_pp.o
 
 all: BLAST2Distance
-
-#install:
-# Defining the object files:
-
-#clean:
-#	rm -fv BLAST2Distance
 
 BLAST2Distance: $(objects)
 	$(LINK) $(DEBUG) $(LINK_OPTIONS) $(LINKER_COMMANDS) $(BINPATH)/$@ $+ $(LIBRARIES)
