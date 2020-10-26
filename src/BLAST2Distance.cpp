@@ -15,9 +15,9 @@ void printUsage(){
 	std::cerr << "                            with three columns. The first columns contains the query sequence ID." << std::endl;
 	std::cerr << "                            The second column columns contains the subject sequence ID. And the" << std::endl;
 	std::cerr << "                            third columns contains the e-value." << std::endl;
-	std::cerr << "                            matrix in phylip format, sth = multiple alignment in (single line) stockholm format." << std::endl;
-	std::cerr << "  -o, --output-file ARG     The file with the lower triangular distance matrix genrated from the e-values in" << std::endl;
+	std::cerr << "  -o, --output-file ARG     The output file for the distance matrix generated from the e-values in" << std::endl;
 	std::cerr << "                            in a relaxed phylip format, that means the names can be longer then 10 characters." << std::endl;
+	std::cerr << "  -m, --make-half-matrix    Generate only the lower triangular matrix. This cannot be used with rapidNJ." << std::endl;
 	exit(EXIT_SUCCESS);
 }
 
@@ -37,11 +37,12 @@ int main(int argc, char* argv[])
 	std::string    inputFileName;
 	std::string   outputFileName;
 	std::string sequenceFileName;
+	bool          makeHalfMatrix = false;
 
-//	pts >> OptionPresent('v', "verbose", inFileName);
-	opts >> Option('i',    "input-file",     inputFileName, "");
-	opts >> Option('o',   "output-file",    outputFileName, "");
-	opts >> Option('s', "sequence-file",  sequenceFileName, "");
+	opts >> Option       ('i',       "input-file",    inputFileName, "");
+	opts >> Option       ('o',      "output-file",   outputFileName, "");
+	opts >> Option       ('s',    "sequence-file", sequenceFileName, "");
+	opts >> OptionPresent('m', "make-half-matrix", makeHalfMatrix);
 
 	if(inputFileName.size() == 0)
 	{
@@ -62,7 +63,7 @@ int main(int argc, char* argv[])
 	}
 
 	SparseDistanceMatrix distanceMatrix(inputFileName, sequenceFileName);
-	distanceMatrix.saveMatrix(outputFileName);
+	distanceMatrix.saveMatrix(outputFileName, makeHalfMatrix);
 
 	return EXIT_SUCCESS;
 }

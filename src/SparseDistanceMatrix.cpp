@@ -60,18 +60,22 @@ SparseDistanceMatrix::SparseDistanceMatrix(std::string & inputFileName, std::str
 	print();
 }
 
-void SparseDistanceMatrix::saveMatrix(std::string & outputFileName) const
+void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHalfMatrix) const
 {
 	std::ofstream fout(outputFileName);
 	fout << m_allSequences.size() << std::endl;
 
 	double offSetDistance = -std::log(m_minValueGreaterThanZero) + 10; // Still have some distance to zero
 
+	size_t limit = m_allSequences.size();
+
 	for(size_t i = 0; i < m_allSequences.size(); i++)
 	{
 		fout << m_allSequences.getShortSeqName(i);
 
-		for(size_t j = 0; j < i; j++)
+		if(makeHalfMatrix) limit = i;
+
+		for(size_t j = 0; j < limit; j++)
 		{
 			const MapKey key(i, j);
 			if(m_distanceMatrix.count(key) > 0)
