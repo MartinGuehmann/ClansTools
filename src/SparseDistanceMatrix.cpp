@@ -90,6 +90,10 @@ void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHal
 
 				fout << " " << distance;
 			}
+			else if(i == j)
+			{
+				fout << " " << 0;
+			}
 			else
 			{
 				double distance  = offSetDistance;
