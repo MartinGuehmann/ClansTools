@@ -8,7 +8,7 @@ class SparseDistanceMatrix
 {
 public:
 	SparseDistanceMatrix(std::string & inputFileName, std::string & sequenceFileName);
-	void saveMatrix(std::string & outputFileName, bool makeHalfMatrix) const;
+	void saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useSortNames) const;
 	void print() const;
 
 private:

@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 FastaSequenceCollection::FastaSequenceCollection(std::string & sequenceFileName)
 {
@@ -65,6 +66,25 @@ std::string FastaSequenceCollection::getShortSeqName(int32_t seqID) const
 	{
 		return seqName;
 	}
+}
+
+std::string FastaSequenceCollection::getCleanSeqName(int32_t seqID) const
+{
+	std::string seqName = m_sequences.at(seqID).getName();
+	std::replace(seqName.begin(), seqName.end(), ' ', '_');
+	std::replace(seqName.begin(), seqName.end(), '/', '_');
+	std::replace(seqName.begin(), seqName.end(), ':', '_');
+
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), '"'), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), '\''), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), ';'), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), ','), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), '['), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), ']'), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), '('), seqName.end());
+	seqName.erase(std::remove(seqName.begin(), seqName.end(), ')'), seqName.end());
+
+	return seqName;
 }
 
 void FastaSequenceCollection::print() const

@@ -4,7 +4,8 @@
 #include "getopt_pp/getopt_pp.h"
 #include <iostream>
 
-void printUsage(){
+void printUsage()
+{
 	std::cerr << "BLAST2Dinstance creates a distance matrix for RapidNJ in a relaxed phylip format. This means it uses more then 10 characters for the sequence names." << std::endl << std::endl;
 	std::cerr << "USAGE: BLAST2Dinstance [OPTIONS]" << std::endl;
 	std::cerr << "OPTIONS:" << std::endl;
@@ -18,6 +19,9 @@ void printUsage(){
 	std::cerr << "  -o, --output-file ARG     The output file for the distance matrix generated from the e-values in" << std::endl;
 	std::cerr << "                            in a relaxed phylip format, that means the names can be longer then 10 characters." << std::endl;
 	std::cerr << "  -m, --make-half-matrix    Generate only the lower triangular matrix. This cannot be used with rapidNJ." << std::endl;
+	std::cerr << "  -u, --use-short-names     Generate the distance matrix with short names, that means it truncates the name at" << std::endl;
+	std::cerr << "                            the first space, otherwise it will replace spaces, colons and slashes by" << std::endl;
+	std::cerr << "                            by underscore and deletes semicolons,commas, quotation marks, brackets, and parentheses." << std::endl;
 	exit(EXIT_SUCCESS);
 }
 
@@ -38,11 +42,13 @@ int main(int argc, char* argv[])
 	std::string   outputFileName;
 	std::string sequenceFileName;
 	bool          makeHalfMatrix = false;
+	bool          useShortNames = false;
 
 	opts >> Option       ('i',       "input-file",    inputFileName, "");
 	opts >> Option       ('o',      "output-file",   outputFileName, "");
 	opts >> Option       ('s',    "sequence-file", sequenceFileName, "");
 	opts >> OptionPresent('m', "make-half-matrix", makeHalfMatrix);
+	opts >> OptionPresent('u',  "use-short-names", useShortNames);
 
 	if(inputFileName.size() == 0)
 	{
@@ -63,7 +69,7 @@ int main(int argc, char* argv[])
 	}
 
 	SparseDistanceMatrix distanceMatrix(inputFileName, sequenceFileName);
-	distanceMatrix.saveMatrix(outputFileName, makeHalfMatrix);
+	distanceMatrix.saveMatrix(outputFileName, makeHalfMatrix, useShortNames);
 
 	return EXIT_SUCCESS;
 }

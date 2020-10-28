@@ -60,7 +60,7 @@ SparseDistanceMatrix::SparseDistanceMatrix(std::string & inputFileName, std::str
 	print();
 }
 
-void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHalfMatrix) const
+void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useSortNames) const
 {
 	std::ofstream fout(outputFileName);
 	fout << m_allSequences.size() << std::endl;
@@ -71,7 +71,10 @@ void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHal
 
 	for(size_t i = 0; i < m_allSequences.size(); i++)
 	{
-		fout << m_allSequences.getShortSeqName(i);
+		if(useSortNames)
+			fout << m_allSequences.getShortSeqName(i);
+		else
+			fout << m_allSequences.getCleanSeqName(i);
 
 		if(makeHalfMatrix) limit = i;
 

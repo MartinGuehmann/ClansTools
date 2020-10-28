@@ -11,6 +11,7 @@ public:
 	FastaSequenceCollection(std::string & sequenceFileName);
 	const int32_t getSeqID(const std::string & seqName) const { return m_name2index.at(seqName); };
 	std::string getShortSeqName(int32_t seqID) const;
+	std::string getCleanSeqName(int32_t seqID) const;
 	void print() const;
 	size_t size() const { return m_sequences.size(); };
 private:
