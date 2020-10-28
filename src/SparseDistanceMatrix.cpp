@@ -13,7 +13,7 @@ SparseDistanceMatrix::SparseDistanceMatrix(std::string & inputFileName, std::str
 	std::ifstream fin(inputFileName);
 	if(!fin.good())
 	{
-		std::cerr << "The sequence file " << inputFileName << " does not exist. Existing." << std::endl;
+		std::cerr << "The BLAST output file " << inputFileName << " does not exist. Existing." << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
