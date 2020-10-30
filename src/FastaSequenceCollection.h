@@ -1,3 +1,5 @@
+#pragma once
+
 #include "FastaSequence.h"
 
 #include <cstdint>

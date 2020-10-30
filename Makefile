@@ -36,6 +36,7 @@ objects = $(OBJPATH)/BLAST2Distance.o \
           $(OBJPATH)/SparseDistanceMatrix.o \
           $(OBJPATH)/FastaSequenceCollection.o \
           $(OBJPATH)/FastaSequence.o \
+          $(OBJPATH)/NodePositions.o \
           $(OBJPATH)/getopt_pp/getopt_pp.o
 
 all: BLAST2Distance

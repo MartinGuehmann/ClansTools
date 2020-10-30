@@ -9,12 +9,13 @@ FastaSequenceCollection::FastaSequenceCollection(std::string & sequenceFileName)
 	std::ifstream fin(sequenceFileName);
 	if(!fin.good())
 	{
-		std::cerr << "The sequence file " << sequenceFileName << " does not exist. Existing." << std::endl;
+		std::cerr << "The sequence/clans file " << sequenceFileName << " does not exist. Existing." << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
 	FastaSequence seq;
-	// Reuse those this object instead of recreating it each interaction
+	bool gotFirstSeq = false;
+	// Reuse this object instead of recreating it each interaction
 	std::string line;
 
 	while(fin.good())
@@ -23,6 +24,8 @@ FastaSequenceCollection::FastaSequenceCollection(std::string & sequenceFileName)
 
 		if(line[0] == '>')
 		{
+			if(!gotFirstSeq) gotFirstSeq = true; // Probably, it does not cost more then having it set each round
+
 			if(seq.isValid())
 			{
 				m_sequences.push_back(seq);
@@ -39,9 +42,18 @@ FastaSequenceCollection::FastaSequenceCollection(std::string & sequenceFileName)
 			std::size_t newIndex = m_sequences.size();
 			m_name2index[line] = newIndex;
 		}
-		else
+		else if(gotFirstSeq)
 		{
-			seq.addSequence(line);
+			// If we are loading the sequences from a clans file
+			// break when we encounter </seq>, checking the first character is enough
+			if(line[0] == '<')
+			{
+				break;
+			}
+			else
+			{
+				seq.addSequence(line);
+			}
 		}
 	}
 

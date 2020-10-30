@@ -1,3 +1,5 @@
+#pragma once
+
 #include "MapKey.h"
 #include "FastaSequenceCollection.h"
 
