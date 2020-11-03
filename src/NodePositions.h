@@ -8,7 +8,7 @@ class NodePositions
 {
 public:
 	NodePositions(std::string & clansFileName);
-	void saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useSortNames) const;
+	void saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useSortNames, bool squareDistances) const;
 	void print() const;
 
 private:

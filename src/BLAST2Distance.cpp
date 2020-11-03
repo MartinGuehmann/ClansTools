@@ -27,11 +27,9 @@ void printUsage()
 	std::cerr << "  -u, --use-short-names     Generate the distance matrix with short names, that means it truncates the name at" << std::endl;
 	std::cerr << "                            the first space, otherwise it will replace spaces, colons and slashes by" << std::endl;
 	std::cerr << "                            by underscore and deletes semicolons,commas, quotation marks, brackets, and parentheses." << std::endl;
+	std::cerr << "  -q, --square-distances    Square the distances in the matrix." << std::endl;
 	exit(EXIT_SUCCESS);
 }
-
-#include <cmath>
-#include <limits>
 
 int main(int argc, char* argv[])
 {
@@ -47,8 +45,9 @@ int main(int argc, char* argv[])
 	std::string    inputFileName;
 	std::string   outputFileName;
 	std::string sequenceFileName;
-	bool          makeHalfMatrix = false;
-	bool          useShortNames = false;
+	bool          makeHalfMatrix  = false;
+	bool          useShortNames   = false;
+	bool          squareDistances = false;
 
 	opts >> Option       ('c',       "clans-file",    clansFileName, "");
 	opts >> Option       ('i',       "input-file",    inputFileName, "");
@@ -56,6 +55,7 @@ int main(int argc, char* argv[])
 	opts >> Option       ('s',    "sequence-file", sequenceFileName, "");
 	opts >> OptionPresent('m', "make-half-matrix", makeHalfMatrix);
 	opts >> OptionPresent('u',  "use-short-names", useShortNames);
+	opts >> OptionPresent('q', "square-distances", squareDistances);
 
 	if(outputFileName.size() == 0)
 	{
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 		}
 
 		NodePositions nodePositions(clansFileName);
-		nodePositions.saveMatrix(outputFileName, makeHalfMatrix, useShortNames);
+		nodePositions.saveMatrix(outputFileName, makeHalfMatrix, useShortNames, squareDistances);
 	}
 	else
 	{
@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 		}
 
 		SparseDistanceMatrix distanceMatrix(inputFileName, sequenceFileName);
-		distanceMatrix.saveMatrix(outputFileName, makeHalfMatrix, useShortNames);
+		distanceMatrix.saveMatrix(outputFileName, makeHalfMatrix, useShortNames, squareDistances);
 	}
 
 	return EXIT_SUCCESS;

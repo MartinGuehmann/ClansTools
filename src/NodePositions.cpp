@@ -65,7 +65,7 @@ NodePositions::NodePositions(std::string & clansFileName)
 	print();
 }
 
-void NodePositions::saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useSortNames) const
+void NodePositions::saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useSortNames, bool squareDistances) const
 {
 	std::ofstream fout(outputFileName);
 	fout << m_allSequences.size() << std::endl;
@@ -96,7 +96,14 @@ void NodePositions::saveMatrix(std::string & outputFileName, bool makeHalfMatrix
 					distance += std::pow(m_positions[k][i] - m_positions[k][j], 2.0f);
 				}
 
-				fout << " " << std::sqrt(distance);
+				if(squareDistances)
+				{
+					fout << " " << distance;
+				}
+				else
+				{
+					fout << " " << std::sqrt(distance);
+				}
 			}
 		}
 

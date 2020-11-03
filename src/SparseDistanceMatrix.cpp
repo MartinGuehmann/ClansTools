@@ -60,7 +60,7 @@ SparseDistanceMatrix::SparseDistanceMatrix(std::string & inputFileName, std::str
 	print();
 }
 
-void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useShortNames) const
+void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHalfMatrix, bool useShortNames, bool squareDistances) const
 {
 	std::ofstream fout(outputFileName);
 	fout << m_allSequences.size() << std::endl;
@@ -91,7 +91,14 @@ void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHal
 					distance += offSetDistance;
 				}
 
-				fout << " " << distance;
+				if(squareDistances)
+				{
+					fout << " " << std::pow(distance, 2.0);
+				}
+				else
+				{
+					fout << " " << distance;
+				}
 			}
 			else if(i == j)
 			{
@@ -101,7 +108,15 @@ void SparseDistanceMatrix::saveMatrix(std::string & outputFileName, bool makeHal
 			{
 				double distance  = offSetDistance;
 				       distance *= 2;
-				fout << " " << std::ceil(distance); // Save space, we are writing to a text file, so get rid of the decimal fractions
+
+				if(squareDistances)
+				{
+					fout << " " << std::ceil(std::pow(distance, 2.0));
+				}
+				else
+				{
+					fout << " " << std::ceil(distance); // Save space, we are writing to a text file, so get rid of the decimal fractions
+				}
 			}
 		}
 
