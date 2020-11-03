@@ -89,7 +89,7 @@ void NodePositions::saveMatrix(std::string & outputFileName, bool makeHalfMatrix
 			}
 			else
 			{
-				float distance = 0.0;
+				float distance = 0.0f;
 
 				for(uint32_t k = 0; k < s_dimensions; k++)
 				{
