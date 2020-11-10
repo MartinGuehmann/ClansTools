@@ -1,4 +1,4 @@
-#include "BLAST2Distance.h"
+#include "ClansTools.h"
 
 #include "SparseDistanceMatrix.h"
 #include "NodePositions.h"

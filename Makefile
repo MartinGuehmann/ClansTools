@@ -32,16 +32,16 @@ OBJPATH=obj
 LIBPATH=lib
 BINPATH=.
 
-objects = $(OBJPATH)/BLAST2Distance.o \
+objects = $(OBJPATH)/ClansTools.o \
           $(OBJPATH)/SparseDistanceMatrix.o \
           $(OBJPATH)/FastaSequenceCollection.o \
           $(OBJPATH)/FastaSequence.o \
           $(OBJPATH)/NodePositions.o \
           $(OBJPATH)/getopt_pp/getopt_pp.o
 
-all: BLAST2Distance
+all: ClansTools
 
-BLAST2Distance: $(objects)
+ClansTools: $(objects)
 	$(LINK) $(DEBUG) $(LINK_OPTIONS) $(LINKER_COMMANDS) $(BINPATH)/$@ $+ $(LIBRARIES)
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp
@@ -50,4 +50,4 @@ $(OBJPATH)/%.o: $(SRCPATH)/%.cpp
 clean:
 	-rm $(OBJPATH)/*.o
 	-rm $(OBJPATH)/getopt_pp/*.o
-	-rm $(BINPATH)/BLAST2Distance
+	-rm $(BINPATH)/ClansTools
