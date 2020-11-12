@@ -33,6 +33,7 @@ LIBPATH=lib
 BINPATH=.
 
 objects = $(OBJPATH)/ClansTools.o \
+          $(OBJPATH)/ClansMaker.o \
           $(OBJPATH)/SparseDistanceMatrix.o \
           $(OBJPATH)/FastaSequenceCollection.o \
           $(OBJPATH)/FastaSequence.o \

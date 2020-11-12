@@ -16,6 +16,9 @@ public:
 	std::string getCleanSeqName(int32_t seqID) const;
 	void print() const;
 	size_t size() const { return m_sequences.size(); };
+	void saveToFile(std::ofstream & fout) const;
+
+
 private:
 	std::vector<FastaSequence> m_sequences;
 	std::unordered_map<std::string, uint32_t > m_name2index;

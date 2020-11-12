@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <fstream>
 
 class FastaSequence
 {
@@ -20,6 +21,7 @@ public:
 	void addName     (std::string & name)     { m_name = name; m_sequence.clear(); }
 	void addSequence (std::string & sequence) { m_sequence += sequence; }
 	const std::string & getName() const { return m_name; };
+	void saveToFile(std::ofstream & fout) const;
 
 private:
 	std::string m_name;

@@ -103,3 +103,11 @@ void FastaSequenceCollection::print() const
 {
 	std::cerr << m_sequences.size() << " sequences loaded" <<  std::endl;
 }
+
+void FastaSequenceCollection::saveToFile(std::ofstream & fout) const
+{
+	for(FastaSequence seq : m_sequences)
+	{
+		seq.saveToFile(fout);
+	}
+}

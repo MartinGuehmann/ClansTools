@@ -2,6 +2,7 @@
 
 #include "SparseDistanceMatrix.h"
 #include "NodePositions.h"
+#include "ClansMaker.h"
 #include "getopt_pp/getopt_pp.h"
 #include <iostream>
 
@@ -10,24 +11,25 @@ void printUsage()
 	std::cerr << "BLAST2Dinstance creates a distance matrix for RapidNJ in a relaxed phylip format. This means it uses more then 10 characters for the sequence names." << std::endl << std::endl;
 	std::cerr << "USAGE: BLAST2Dinstance [OPTIONS]" << std::endl;
 	std::cerr << "OPTIONS:" << std::endl;
-	std::cerr << "  -h, --help                Display this help message and exit. Ignores all other options." << std::endl;
-	std::cerr << "  -s, --sequence-file ARG   The fasta file from that BLAST generated the high scoring pairs. Ignored" << std::endl;
-	std::cerr << "                            if --clans-file is used." << std::endl;
-	std::cerr << "  -i, --input-file ARG      The file with the e-values of the high scoring pairs from an all to all comparison" << std::endl;
-	std::cerr << "                            BLAST search of the input sequences. This file is a tab separated table" << std::endl;
-	std::cerr << "                            with three columns. The first columns contains the query sequence ID." << std::endl;
-	std::cerr << "                            The second column columns contains the subject sequence ID. And the" << std::endl;
-	std::cerr << "                            third columns contains the e-value. Ignored if --clans-file is used." << std::endl;
-	std::cerr << "  -c, --clans-file ARG      The clans file that contains the positions from which the distanced are to be calulated." << std::endl;
-	std::cerr << "                            It is also used to extract the sequence names. If used --sequence-file and --input-file are" << std::endl;
-	std::cerr << "                            ignored." << std::endl;
-	std::cerr << "  -o, --output-file ARG     The output file for the distance matrix generated from the e-values in" << std::endl;
-	std::cerr << "                            in a relaxed phylip format, that means the names can be longer then 10 characters." << std::endl;
-	std::cerr << "  -m, --make-half-matrix    Generate only the lower triangular matrix. This cannot be used with rapidNJ." << std::endl;
-	std::cerr << "  -u, --use-short-names     Generate the distance matrix with short names, that means it truncates the name at" << std::endl;
-	std::cerr << "                            the first space, otherwise it will replace spaces, colons and slashes by" << std::endl;
-	std::cerr << "                            by underscore and deletes semicolons,commas, quotation marks, brackets, and parentheses." << std::endl;
-	std::cerr << "  -q, --square-distances    Square the distances in the matrix." << std::endl;
+	std::cerr << "  -h, --help                    Display this help message and exit. Ignores all other options." << std::endl;
+	std::cerr << "  -s, --sequence-file ARG       The fasta file from that BLAST generated the high scoring pairs. Ignored" << std::endl;
+	std::cerr << "                                if --clans-file is used." << std::endl;
+	std::cerr << "  -i, --input-file ARG          The file with the e-values of the high scoring pairs from an all to all comparison" << std::endl;
+	std::cerr << "                                BLAST search of the input sequences. This file is a tab separated table" << std::endl;
+	std::cerr << "                                with three columns. The first columns contains the query sequence ID." << std::endl;
+	std::cerr << "                                The second column columns contains the subject sequence ID. And the" << std::endl;
+	std::cerr << "                                third columns contains the e-value. Ignored if --clans-file is used." << std::endl;
+	std::cerr << "  -c, --clans-file ARG          The clans file that contains the positions from which the distanced are to be calulated." << std::endl;
+	std::cerr << "                                It is also used to extract the sequence names. If used --sequence-file and --input-file are" << std::endl;
+	std::cerr << "                                ignored." << std::endl;
+	std::cerr << "  -d, --matrix-output-file ARG  The output file for the distance matrix generated from the e-values in" << std::endl;
+	std::cerr << "                                in a relaxed phylip format, that means the names can be longer then 10 characters." << std::endl;
+	std::cerr << "  -o, --clans-output-file ARG   The clans output file generated from the sequence-file and the BLAST input-file." << std::endl;
+	std::cerr << "  -m, --make-half-matrix        Generate only the lower triangular matrix. This cannot be used with rapidNJ." << std::endl;
+	std::cerr << "  -u, --use-short-names         Generate the distance matrix with short names, that means it truncates the name at" << std::endl;
+	std::cerr << "                                the first space, otherwise it will replace spaces, colons and slashes by" << std::endl;
+	std::cerr << "                                by underscore and deletes semicolons,commas, quotation marks, brackets, and parentheses." << std::endl;
+	std::cerr << "  -q, --square-distances        Square the distances in the matrix." << std::endl;
 	exit(EXIT_SUCCESS);
 }
 
@@ -41,25 +43,31 @@ int main(int argc, char* argv[])
 		printUsage();
 	}
 
-	std::string    clansFileName;
-	std::string    inputFileName;
-	std::string   outputFileName;
-	std::string sequenceFileName;
+	std::string        clansFileName;
+	std::string        inputFileName;
+	std::string     sequenceFileName;
+	std::string  clansOutputFileName;
+	std::string matrixOutputFileName;
 	bool          makeHalfMatrix  = false;
 	bool          useShortNames   = false;
 	bool          squareDistances = false;
 
-	opts >> Option       ('c',       "clans-file",    clansFileName, "");
-	opts >> Option       ('i',       "input-file",    inputFileName, "");
-	opts >> Option       ('o',      "output-file",   outputFileName, "");
-	opts >> Option       ('s',    "sequence-file", sequenceFileName, "");
-	opts >> OptionPresent('m', "make-half-matrix", makeHalfMatrix);
-	opts >> OptionPresent('u',  "use-short-names", useShortNames);
-	opts >> OptionPresent('q', "square-distances", squareDistances);
+	opts >> Option       ('c',         "clans-file",        clansFileName, "");
+	opts >> Option       ('i',         "input-file",        inputFileName, "");
+	opts >> Option       ('s',      "sequence-file",     sequenceFileName, "");
+	opts >> Option       ('o',  "clans-output-file",  clansOutputFileName, "");
+	opts >> Option       ('d', "matrix-output-file", matrixOutputFileName, "");
 
-	if(outputFileName.size() == 0)
+	opts >> OptionPresent('u',    "use-short-names", useShortNames);
+	opts >> OptionPresent('m',   "make-half-matrix", makeHalfMatrix);
+	opts >> OptionPresent('q',   "square-distances", squareDistances);
+
+	bool  hasClansOutputFile = ( clansOutputFileName.size() > 0);
+	bool hasMatrixOutputFile = (matrixOutputFileName.size() > 0);
+
+	if(!hasClansOutputFile && !hasMatrixOutputFile)
 	{
-		std::cerr << "Missing output file. Exiting." << std::endl;
+		std::cerr << "Missing matrix or clans output file. Exiting." << std::endl;
 		return EXIT_FAILURE;
 	}
 
@@ -69,6 +77,17 @@ int main(int argc, char* argv[])
 
 	if(hasClansFile)
 	{
+		if(!hasMatrixOutputFile)
+		{
+			std::cerr << "Missing matrix output file. Exiting." << std::endl;
+			return EXIT_FAILURE;
+		}
+
+		if(hasClansOutputFile)
+		{
+			std::cerr << "Has matrix output file. Clans output file is ignored." << std::endl;
+		}
+
 		std::cerr << "Generating distances from clans file." << std::endl;
 		if(hasInputFile)
 		{
@@ -80,8 +99,9 @@ int main(int argc, char* argv[])
 			std::cerr << "Sequence file is ignored." << std::endl;
 		}
 
+		std::cerr << "Making distance matrix from CLANS file." << std::endl;
 		NodePositions nodePositions(clansFileName);
-		nodePositions.saveMatrix(outputFileName, makeHalfMatrix, useShortNames, squareDistances);
+		nodePositions.saveMatrix(matrixOutputFileName, makeHalfMatrix, useShortNames, squareDistances);
 	}
 	else
 	{
@@ -97,8 +117,18 @@ int main(int argc, char* argv[])
 			return EXIT_FAILURE;
 		}
 
-		SparseDistanceMatrix distanceMatrix(inputFileName, sequenceFileName);
-		distanceMatrix.saveMatrix(outputFileName, makeHalfMatrix, useShortNames, squareDistances);
+		if(hasMatrixOutputFile)
+		{
+			std::cerr << "Making distance matrix from BLAST output." << std::endl;
+			SparseDistanceMatrix distanceMatrix(inputFileName, sequenceFileName);
+			distanceMatrix.saveMatrix(matrixOutputFileName, makeHalfMatrix, useShortNames, squareDistances);
+		}
+		else if(hasClansOutputFile)
+		{
+			std::cerr << "Converting BLAST output to CLANS file." << std::endl;
+			ClansMaker clansMaker(sequenceFileName, clansOutputFileName, inputFileName);
+			clansMaker.saveFile();
+		}
 	}
 
 	return EXIT_SUCCESS;
