@@ -73,9 +73,10 @@ rapidnj distances.phy -i pd -o t > tree.newick
 
 ## Third-party code
 
-`src/getopt_pp/` bundles [GetOpt_pp](https://github.com/dgutson/getoptpp)
-by Daniel Gutson, FuDePAN, licensed under the GNU General Public License
-v3 - see [`LICENSE`](LICENSE), which also covers this project as a whole.
+`src/getopt_pp/` bundles GetOpt_pp by Daniel Gutson, FuDePAN (per its own
+copyright header - no live upstream repository found), licensed under
+the GNU General Public License v3 - see [`LICENSE`](LICENSE), which also
+covers this project as a whole.
 
 ## License
 
